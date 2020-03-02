@@ -1,17 +1,21 @@
 package assign2;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jayway.jsonpath.JsonPath;
+
 
 public class writefile {
 	public static String inputline;
@@ -48,7 +52,6 @@ public class writefile {
 		
 		JSONObject getalbum = new JSONObject(myResponse.getJSONObject("album").toString());
 		String albumname = getalbum.getString("name");
-		//System.out.println("album name: " + albumname);
 		return albumname;
 		
 	}
@@ -56,7 +59,6 @@ public class writefile {
 	public String getartistname() throws JSONException {
 		JSONObject getalbum = new JSONObject(myResponse.getJSONObject("album").toString());	
 		String artist = getalbum.getString("artist");
-		//System.out.println("artist name: " + artist);
 		return artist;
 
 	}
@@ -74,9 +76,7 @@ public class writefile {
 		String prepath = "$.tracks.track[";
 		String postpath = "].";
 		//path - $.tracks.track[1].duration
-		String path = prepath + x + postpath + data; 
-		System.out.println("path" + path);
-		
+		String path = prepath + x + postpath + data; 		
         String value = JsonPath.read(obj.toString(), path); //value is the value pair of the key        
         return value;
 	}
@@ -107,19 +107,29 @@ public class writefile {
         return rank;
 	}
 
-	public void print() throws JSONException {
-		String album  = this.getalbumname();
-		String artist = this.getartistname();
-		String track = this.gettrackinfo(1,"name");
-		String duration = this.gettrackinfo(1, "duration");
-		String rank = this.getrank(1);
-		System.out.println("album : " + album);
-		System.out.println("artist : " + artist);
-		System.out.println("track : " + track);
-		System.out.println("duration : " + duration);
-		System.out.println("rank : " + rank);
-		
-	}
+	public void print() throws JSONException, FileNotFoundException {
+		String[] rank = {"@attr","rank"}; //string needed because we need to go the last layer 
 
+		System.out.println("album : " + this.getalbumname() );
+		System.out.println("artist : " + this.getartistname());
+		System.out.println("track : " + this.gettrackinfo(1,"name"));
+		System.out.println("duration : " + this.gettrackinfo(1, "duration"));
+		System.out.println("rank : " + this.get3rdlayer(1, rank));
+		
+        Map<String,String> o = new LinkedHashMap<String, String>(5); 
+		o.put("album", this.getalbumname());
+		o.put("artist", this.getartistname());
+		o.put("track", this.gettrackinfo(1,"name"));
+		o.put("duration", this.gettrackinfo(1, "duration"));
+		o.put("rank", this.get3rdlayer(1, rank));
+		
+		JSONObject oo = new JSONObject();
+		oo.put((this.gettrackinfo(1, "name")),o);
+        PrintWriter pw = new PrintWriter("newJSON.json"); 
+        pw.write(oo.toString(1)); 
+          
+        pw.flush(); 
+        pw.close(); 
+	}
 	
 }
