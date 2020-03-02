@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -114,7 +114,6 @@ public class writefile {
 	public String getsummary () throws JSONException {
 		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
         String summary = JsonPath.read(obj.toString(), "$.wiki.summary");         
-        System.out.println("Summary: " + summary);
         return summary;
 	}
 
@@ -126,21 +125,31 @@ public class writefile {
 	 */
 	public void print() throws JSONException, FileNotFoundException {
 		String[] rank = {"@attr","rank"}; //string needed because we need to go the last layer 
-
-        Map<String,String> o = new LinkedHashMap<String, String>(5); 
-		o.put("album", this.getalbumname());
-		o.put("artist", this.getartistname());
-		o.put("track", this.gettrackinfo(1,"name"));
-		o.put("duration", this.gettrackinfo(1, "duration"));
-		o.put("rank", this.get3rdlayer(1, rank));
 		
+        Map<String,String> o = new LinkedHashMap<String, String>(5); 
 		JSONObject oo = new JSONObject();
-		oo.put((this.gettrackinfo(1, "name")),o);
         PrintWriter pw = new PrintWriter("newJSON.json"); 
+        for ( int i = 0; i < this.size(); i++) {
+        	o.put("album", this.getalbumname());
+    		o.put("artist", this.getartistname());
+    		o.put("track", this.gettrackinfo(i,"name"));
+    		o.put("duration", this.gettrackinfo(i, "duration"));
+    		o.put("rank", this.get3rdlayer(i, rank));
+    		o.put("summary", this.getsummary());
+    		oo.put((this.gettrackinfo(i, "name")),o);
+
+        }
         pw.write(oo.toString(1)); 
-          
+
+
         pw.flush(); 
         pw.close(); 
 	}
 	
+	public int size() throws JSONException {
+		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());
+		JSONObject tracks = new JSONObject(obj.getJSONObject("tracks").toString());
+		JSONArray trackarray = tracks.getJSONArray("track");		
+		return trackarray.length();
+	}
 }
