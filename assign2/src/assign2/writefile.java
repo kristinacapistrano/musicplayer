@@ -64,10 +64,8 @@ public class writefile {
 	
 	/**
 	 * get in the nested json file 2nd layer to get information needed 
-	 * @param x the index of the array in track array 
-	 * @param y 2 if second layer has to be reached,  if 3rd layer is needed 
+	 * @param x the index wanted from the track array
 	 * @param data has to match the key name trying to get from the 2nd layer
-	 * @param data2 has to match the main kay name that is needed 
 	 * @return piece of data wanted
 	 * @throws JSONException if json query did not work
 	 */
@@ -82,10 +80,25 @@ public class writefile {
         String value = JsonPath.read(obj.toString(), path); //value is the value pair of the key        
         return value;
 	}
-	/*
-	 * Below method is taken care of the method from above
-	 * this is to avoid redundancy
+	/**
+	 * This will go in to the last layer of the nested json album file from lastfm
+	 * @param x the index wanted from the track array
+	 * @param data array where index 1 matches the key name of data needed, 
+	 * 			index 0 is the key_parent where key_wanted is located.
+	 * @return
+	 * @throws JSONException
 	 */
+	public String get3rdlayer(int x,  String[] data) throws JSONException {
+		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
+		String prepath = "$.tracks.track[";
+		String postpath = "].";
+		//path - $.tracks.track[1].duration
+		String path = prepath + x + postpath + data[0] + "." + data[1]; 
+		
+        String value = JsonPath.read(obj.toString(), path); //value is the value pair of the key        
+        return value;
+	}
+	
 
 	public String getrank (int x) throws JSONException {
 		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
@@ -93,9 +106,7 @@ public class writefile {
         System.out.println("track: " + rank);
         return rank;
 	}
-	
-	
-	
+
 	public void print() throws JSONException {
 		String album  = this.getalbumname();
 		String artist = this.getartistname();
