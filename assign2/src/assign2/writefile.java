@@ -51,7 +51,7 @@ public class writefile {
 		
 		JSONObject getalbum = new JSONObject(myResponse.getJSONObject("album").toString());
 		String albumname = getalbum.getString("name");
-		System.out.println("album name: " + albumname);
+		//System.out.println("album name: " + albumname);
 		return albumname;
 		
 	}
@@ -59,18 +59,25 @@ public class writefile {
 	public String getartistname() throws JSONException {
 		JSONObject getalbum = new JSONObject(myResponse.getJSONObject("album").toString());	
 		String artist = getalbum.getString("artist");
-		System.out.println("artist name: " + artist);
+		//System.out.println("artist name: " + artist);
 		return artist;
 
 	}
-	public String getruntime(int x, String data) throws JSONException {
+	/**
+	 * get in the nested json file 2nd layer to get information needed 
+	 * @param x the index of the array in track array 
+	 * @param data has to match the key name trying to get from the lastfm json file
+	 * @return piece of data wanted
+	 * @throws JSONException if json query did not work
+	 */
+	public String gettrackinfo(int x, String data) throws JSONException {
 		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
 		String prepath = "$.tracks.track[";
 		String postpath = "].";
 		String path = prepath + x + postpath + data; 
 		//path - $.tracks.track[1].duration
         String value = JsonPath.read(obj.toString(), path); //value is the value pair of the key        
-        System.out.println(data +": " + value); // test string 
+        //System.out.println(data +": " + value); // test string 
         return value;
 	}
 	/*
@@ -91,6 +98,20 @@ public class writefile {
 	}
 	
 	
+	
+	public void print() throws JSONException {
+		String album  = this.getalbumname();
+		String artist = this.getartistname();
+		String track = this.gettrackinfo(1,"name");
+		String duration = this.gettrackinfo(1, "duration");
+		String rank = this.getrank(1);
+		System.out.println("album : " + album);
+		System.out.println("artist : " + artist);
+		System.out.println("track : " + track);
+		System.out.println("duration : " + duration);
+		System.out.println("rank : " + rank);
+		
+	}
 	
 	
 //	public void getallruntime() throws JSONException, IOException{
