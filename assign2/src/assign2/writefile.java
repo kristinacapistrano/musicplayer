@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,9 +16,7 @@ import com.jayway.jsonpath.JsonPath;
 public class writefile {
 	public static String inputline;
 	public static JSONObject myResponse;
-	//public static JSONObject music;
-	
-	
+
 	public writefile(String url) throws IOException, JSONException {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection)obj.openConnection();
@@ -63,33 +60,33 @@ public class writefile {
 		return artist;
 
 	}
+	
+	
 	/**
 	 * get in the nested json file 2nd layer to get information needed 
 	 * @param x the index of the array in track array 
-	 * @param data has to match the key name trying to get from the lastfm json file
+	 * @param y 2 if second layer has to be reached,  if 3rd layer is needed 
+	 * @param data has to match the key name trying to get from the 2nd layer
+	 * @param data2 has to match the main kay name that is needed 
 	 * @return piece of data wanted
 	 * @throws JSONException if json query did not work
 	 */
-	public String gettrackinfo(int x, String data) throws JSONException {
+	public String gettrackinfo(int x,  String data) throws JSONException {
 		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
 		String prepath = "$.tracks.track[";
 		String postpath = "].";
-		String path = prepath + x + postpath + data; 
 		//path - $.tracks.track[1].duration
+		String path = prepath + x + postpath + data; 
+		System.out.println("path" + path);
+		
         String value = JsonPath.read(obj.toString(), path); //value is the value pair of the key        
-        //System.out.println(data +": " + value); // test string 
         return value;
 	}
 	/*
 	 * Below method is taken care of the method from above
 	 * this is to avoid redundancy
 	 */
-//	public String gettrackname(int x) throws JSONException {
-//		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
-//        String trackname = JsonPath.read(obj.toString(), "$.tracks.track[1].name");         
-//        System.out.println("track: " + trackname);
-//        return trackname;
-//	}
+
 	public String getrank (int x) throws JSONException {
 		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
         String rank = JsonPath.read(obj.toString(), "$.tracks.track[1].@attr.rank");         
@@ -112,33 +109,6 @@ public class writefile {
 		System.out.println("rank : " + rank);
 		
 	}
-	
-	
-//	public void getallruntime() throws JSONException, IOException{
-//		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
-//		JSONObject tracks = new JSONObject(obj.getJSONObject("tracks").toString());	
-//		JSONArray track = tracks.getJSONArray("track"); //returns the array
-//		int tracksize = track.length();
-//		String prepath = "$.tracks.track[";
-//		String postpath = "].duration";
-//		String runtime;
-//		JSONObject dobj = new JSONObject();
-//		FileWriter file = new FileWriter("duration.json");
-//       // Map<String, String> m = new LinkedHashMap<String, String>(tracksize); 
-//		for (int i = 0 ; i < tracksize ; i++) {
-//			String path = prepath + i + postpath;
-//			//System.out.println(path);
-//			runtime = JsonPath.read(obj.toString(),path.toString());         
-//			dobj.put("runtime", runtime);
-//			
-//	        file.write(dobj.toString(4));// tostring will format properly, the param will give it space/indents
-//
-//			
-//		}
-//
-//        file.flush();
-//	}
-	 
 
 	
 }
