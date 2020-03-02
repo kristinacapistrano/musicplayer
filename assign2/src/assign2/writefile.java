@@ -106,16 +106,27 @@ public class writefile {
         System.out.println("track: " + rank);
         return rank;
 	}
+	/**
+	 * get summary
+	 * @return
+	 * @throws JSONException
+	 */
+	public String getsummary () throws JSONException {
+		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
+        String summary = JsonPath.read(obj.toString(), "$.wiki.summary");         
+        System.out.println("Summary: " + summary);
+        return summary;
+	}
 
+
+	/**
+	 * this method will create the new json file with the object wanted.
+	 * @throws JSONException
+	 * @throws FileNotFoundException
+	 */
 	public void print() throws JSONException, FileNotFoundException {
 		String[] rank = {"@attr","rank"}; //string needed because we need to go the last layer 
 
-		System.out.println("album : " + this.getalbumname() );
-		System.out.println("artist : " + this.getartistname());
-		System.out.println("track : " + this.gettrackinfo(1,"name"));
-		System.out.println("duration : " + this.gettrackinfo(1, "duration"));
-		System.out.println("rank : " + this.get3rdlayer(1, rank));
-		
         Map<String,String> o = new LinkedHashMap<String, String>(5); 
 		o.put("album", this.getalbumname());
 		o.put("artist", this.getartistname());
