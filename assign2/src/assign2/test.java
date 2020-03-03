@@ -18,7 +18,6 @@ public class test {
 //			//file.gettrackname(1);
 //			file.getrank(1);
 			file.print();
-			file.size();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

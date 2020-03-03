@@ -100,12 +100,12 @@ public class writefile {
 	}
 	
 
-	public String getrank (int x) throws JSONException {
-		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
-        String rank = JsonPath.read(obj.toString(), "$.tracks.track[1].@attr.rank");         
-        System.out.println("track: " + rank);
-        return rank;
-	}
+//	public String getrank (int x) throws JSONException {
+//		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());	
+//        String rank = JsonPath.read(obj.toString(), "$.tracks.track[1].@attr.rank");         
+//        System.out.println("track: " + rank);
+//        return rank;
+//	}
 	/**
 	 * get summary
 	 * @return
@@ -136,7 +136,7 @@ public class writefile {
     		o.put("duration", this.gettrackinfo(i, "duration"));
     		o.put("rank", this.get3rdlayer(i, rank));
     		o.put("summary", this.getsummary());
-    		oo.put((this.gettrackinfo(i, "name")),o);
+    		oo.put((this.gettrackinfo(i, "name")),o); //get name of song to be the object name per song
 
         }
         pw.write(oo.toString(1)); 
