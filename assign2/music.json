@@ -26,9 +26,9 @@
         }
     ],
     "mbid": "63b3a8ca-26f2-4e2b-b867-647a6ec2bebd",
-    "listeners": "410258",
+    "listeners": "411103",
     "artist": "Cher",
-    "playcount": "2688938",
+    "playcount": "2696624",
     "wiki": {
         "summary": "Believe is the twenty-third studio album by American  singer-actress Cher, released on November 10, 1998 by Warner Bros. Records. The RIAA certified it Quadruple Platinum on December 23, 1999, recognizing four million shipments in the United States; Worldwide, the album has sold more than 20 million copies, making it the biggest-selling album of her career. In 1999 the album received three Grammy Awards nominations including \"Record of the Year\", \"Best Pop Album\" and winning \"Best Dance Recording\" for the single \"Believe\". <a href=\"http://www.last.fm/music/Cher/Believe\">Read more on Last.fm<\/a>.",
         "published": "27 Jul 2008, 15:55",
@@ -38,7 +38,7 @@
     "url": "https://www.last.fm/music/Cher/Believe",
     "tracks": {"track": [
         {
-            "duration": "239",
+            "duration": "221",
             "@attr": {"rank": "1"},
             "streamable": {
                 "#text": "0",
@@ -98,7 +98,7 @@
             "url": "https://www.last.fm/music/Cher/_/All+or+Nothing"
         },
         {
-            "duration": "223",
+            "duration": "217",
             "@attr": {"rank": "5"},
             "streamable": {
                 "#text": "0",
@@ -124,8 +124,8 @@
                 "name": "Cher",
                 "url": "https://www.last.fm/music/Cher"
             },
-            "name": "Dov'è L'amore",
-            "url": "https://www.last.fm/music/Cher/_/Dov%27%C3%A8+L%27amore"
+            "name": "Dov'e L'amore",
+            "url": "https://www.last.fm/music/Cher/_/Dov%27e+L%27amore"
         },
         {
             "duration": "272",
@@ -173,7 +173,7 @@
             "url": "https://www.last.fm/music/Cher/_/Love+Is+the+Groove"
         },
         {
-            "duration": "310",
+            "duration": "234",
             "@attr": {"rank": "10"},
             "streamable": {
                 "#text": "0",

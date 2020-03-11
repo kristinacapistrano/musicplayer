@@ -130,11 +130,10 @@ public class writefile {
     		o.put("track", this.gettrackinfo(i,"name"));
     		o.put("duration", this.gettrackinfo(i, "duration"));
     		o.put("rank", this.get3rdlayer(i, rank));
-    		o.put("summary:" ,this.getsummary());
     		oo.put((this.gettrackinfo(i, "name")),o); //get name of song to be the object name per song
 
         }		
-        //oo.put("summary", this.getsummary());
+        oo.put("summary", this.getsummary());
 
         pw.write(oo.toString(1)); 
         pw.flush(); 
