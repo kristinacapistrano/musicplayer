@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ public class writefile {
 			e.printStackTrace();
 		}
 		
-		  try (FileWriter file = new FileWriter("music.json")) {
+		  try (FileWriter file = new FileWriter("fromFM.json")) {
 	        	 
 	            file.write(myResponse.toString(4));// tostring will format properly, the param will give it space/indents
 	            file.flush();
@@ -123,7 +124,7 @@ public class writefile {
 		
         Map<String,String> o = new LinkedHashMap<String, String>(5); 
 		JSONObject oo = new JSONObject();
-        PrintWriter pw = new PrintWriter("newJSON.json"); 
+        PrintWriter pw = new PrintWriter("music.json"); 
         for ( int i = 0; i < this.size(); i++) {
         	o.put("album", this.getalbumname());
     		o.put("artist", this.getartistname());
@@ -139,7 +140,29 @@ public class writefile {
         pw.flush(); 
         pw.close(); 
 	}
-	
+	public void print2() throws JSONException, FileNotFoundException {
+		String[] rank = {"@attr","rank"}; //string needed because we need to go the last layer 
+		
+        Map<String,String> _map = new LinkedHashMap<String, String>(5); 
+        Map<String, JSONObject> objmap = new HashMap<>();
+		JSONObject obj = new JSONObject();
+        PrintWriter pw = new PrintWriter ("music2.json");
+        for ( int i = 0; i < this.size(); i++) {
+        	_map.put("album", this.getalbumname());
+        	_map.put("artist", this.getartistname());
+        	_map.put("track", this.gettrackinfo(i,"name"));
+        	_map.put("duration", this.gettrackinfo(i, "duration"));
+        	_map.put("rank", this.get3rdlayer(i, rank));
+        	obj.put((this.gettrackinfo(i, "name")),_map);
+        	objmap.put((this.gettrackinfo(i, "name")), obj);//get name of song to be the object name per song
+
+        }		
+        obj.put("summary", this.getsummary());
+
+        pw.write(obj.toString(1)); 
+        pw.flush(); 
+        pw.close(); 
+	}
 	public int size() throws JSONException {
 		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());
 		JSONObject tracks = new JSONObject(obj.getJSONObject("tracks").toString());
