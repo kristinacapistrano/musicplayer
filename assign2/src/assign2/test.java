@@ -18,7 +18,7 @@ public class test {
 //			//file.gettrackname(1);
 //			file.getrank(1);
 			file.print();
-			file.print2();
+			//file.print2(); doesnt work 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
 import com.jayway.jsonpath.JsonPath;
 
 
-public class writefile {
+public class writefile extends Object implements Serializable{
 	public static String inputline;
 	public static JSONObject myResponse;
 
@@ -162,7 +163,7 @@ public class writefile {
 
         }
         for (int i = 0 ; i < this.size(); i++) {
-        	pw.write((""+i).toString());
+        	pw.write(objmap.get(""+i).toString(1));
         }
         pw.flush(); 
         pw.close(); 
