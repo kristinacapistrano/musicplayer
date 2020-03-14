@@ -140,13 +140,16 @@ public class writefile {
         pw.flush(); 
         pw.close(); 
 	}
-	public void print2() throws JSONException, FileNotFoundException {
+	public void print2() throws JSONException, IOException {
 		String[] rank = {"@attr","rank"}; //string needed because we need to go the last layer 
 		
         Map<String,String> _map = new LinkedHashMap<String, String>(5); 
         Map<String, JSONObject> objmap = new HashMap<>();
 		JSONObject obj = new JSONObject();
-        PrintWriter pw = new PrintWriter ("music2.json");
+		
+        FileWriter pw = new FileWriter ("music2.json", true);
+        obj.put("summary", this.getsummary());
+        pw.write(obj.toString(1)); 
         for ( int i = 0; i < this.size(); i++) {
         	_map.put("album", this.getalbumname());
         	_map.put("artist", this.getartistname());
@@ -154,12 +157,13 @@ public class writefile {
         	_map.put("duration", this.gettrackinfo(i, "duration"));
         	_map.put("rank", this.get3rdlayer(i, rank));
         	obj.put((this.gettrackinfo(i, "name")),_map);
-        	objmap.put((this.gettrackinfo(i, "name")), obj);//get name of song to be the object name per song
+        	//create new object everytime we loop - test to see if it'll still override objects
+        	objmap.put(""+i, obj);//get name of song to be the object name per song
 
-        }		
-        obj.put("summary", this.getsummary());
-
-        pw.write(obj.toString(1)); 
+        }
+        for (int i = 0 ; i < this.size(); i++) {
+        	pw.write((""+i).toString());
+        }
         pw.flush(); 
         pw.close(); 
 	}
