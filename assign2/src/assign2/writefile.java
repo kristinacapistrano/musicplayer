@@ -79,8 +79,8 @@ public class writefile extends Object implements Serializable{
 		String postpath = "].";
 		//path - $.tracks.track[1].duration
 		String path = prepath + x + postpath + data; 		
-        String value = JsonPath.read(obj.toString(), path); //value is the value pair of the key        
-        return value;
+		String value = JsonPath.read(obj.toString(), path); //value is the value pair of the key        
+		return value;
 	}
 	/**
 	 * This will go in to the last layer of the nested json album file from lastfm
@@ -122,52 +122,26 @@ public class writefile extends Object implements Serializable{
 	 */
 	public void print() throws JSONException, FileNotFoundException {
 		String[] rank = {"@attr","rank"}; //string needed because we need to go the last layer 
-		
-        Map<String,String> o = new LinkedHashMap<String, String>(5); 
-		JSONObject oo = new JSONObject();
-        PrintWriter pw = new PrintWriter("music.json"); 
-        for ( int i = 0; i < this.size(); i++) {
-        	o.put("album", this.getalbumname());
-    		o.put("artist", this.getartistname());
-    		o.put("track", this.gettrackinfo(i,"name"));
-    		o.put("duration", this.gettrackinfo(i, "duration"));
-    		o.put("rank", this.get3rdlayer(i, rank));
-    		oo.put((this.gettrackinfo(i, "name")),o); //get name of song to be the object name per song
+	       	JSONObject oo = new JSONObject();
+		PrintWriter pw = new PrintWriter("music.json"); 
+		for ( int i = 0; i < this.size(); i++) {
+		    Map<String,String> o = new LinkedHashMap<String, String>(5); 
+		    o.put("album", this.getalbumname());
+		    o.put("artist", this.getartistname());
+		    o.put("track", this.gettrackinfo(i,"name"));
+		    o.put("duration", this.gettrackinfo(i, "duration"));
+		    o.put("rank", this.get3rdlayer(i, rank));
+		    oo.put((this.gettrackinfo(i, "name")),o); //get name of song to be the object name per song
 
-        }		
-        oo.put("summary", this.getsummary());
+		}		
+		oo.put("summary", this.getsummary());
 
-        pw.write(oo.toString(1)); 
-        pw.flush(); 
-        pw.close(); 
+		pw.write(oo.toString(1)); 
+		pw.flush(); 
+		pw.close(); 
 	}
-	public void print2() throws JSONException, IOException {
-		String[] rank = {"@attr","rank"}; //string needed because we need to go the last layer 
-		
-        Map<String,String> _map = new LinkedHashMap<String, String>(5); 
-        Map<String, JSONObject> objmap = new HashMap<>();
-		JSONObject obj = new JSONObject();
-		
-        FileWriter pw = new FileWriter ("music2.json", true);
-        obj.put("summary", this.getsummary());
-        pw.write(obj.toString(1)); 
-        for ( int i = 0; i < this.size(); i++) {
-        	_map.put("album", this.getalbumname());
-        	_map.put("artist", this.getartistname());
-        	_map.put("track", this.gettrackinfo(i,"name"));
-        	_map.put("duration", this.gettrackinfo(i, "duration"));
-        	_map.put("rank", this.get3rdlayer(i, rank));
-        	obj.put((this.gettrackinfo(i, "name")),_map);
-        	//create new object everytime we loop - test to see if it'll still override objects
-        	objmap.put(""+i, obj);//get name of song to be the object name per song
 
-        }
-        for (int i = 0 ; i < this.size(); i++) {
-        	pw.write(objmap.get(""+i).toString(1));
-        }
-        pw.flush(); 
-        pw.close(); 
-	}
+ 
 	public int size() throws JSONException {
 		JSONObject obj = new JSONObject(myResponse.getJSONObject("album").toString());
 		JSONObject tracks = new JSONObject(obj.getJSONObject("tracks").toString());
