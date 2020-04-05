@@ -17,12 +17,14 @@ public:
   /*serialize and deserialize JSON*/
   void jsonreadwrite(){
  
-    //-- serialize --//
     ifstream ifs("FMdata.json");
-    Json::Reader reader;
+    Json::Reader reader;//read from fm json file 
     Json::Value obj ;
     reader.parse(ifs, obj);
 
+    ofstream _file;
+    _file.open("music.json"); //create a json file to store only needed data
+    Json::Value music;
 
     string album = obj["album"]["name"].asString();
     string artist = obj["album"]["artist"].asString();
@@ -44,10 +46,18 @@ public:
       string rank = track[i]["@attr"]["rank"].asString();
       cout << "title: " << title<< " and duration: " << time
 	   <<" and rank: " << rank  << endl;
+      music[title]["title"]=title;
+      music[title]["author"]=artist;
+      music[title]["album"]=album;
 
-      
-    }
-  }
 
-};
+
+    }//forloop
+     Json::StyledWriter _writer;
+     _file << _writer.write(music);
+    _file.close();
+
+  }//method 
+
+};//class 
   
