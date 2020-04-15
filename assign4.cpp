@@ -228,7 +228,8 @@ public:
       // Handle menu selections
       if(selectPath.compare("File/Save")==0){
          bool restSave = library->toJsonFile("mediacollection.json");
-         cout << "Save not implemented" << endl;
+	 if (restSave == true ) cout << "LIBRARY SAVED TO FILE" << endl;
+	 else cout << "LIBRARY NOT SAVED TO FILE " << endl;
       }else if(selectPath.compare("File/Restore")==0){
          cout << "Restore not implemented" << endl;
       }else if(selectPath.compare("File/Tree Refresh")==0){
@@ -257,7 +258,6 @@ public:
 	
       }else if (selectPath.compare("Album/Remove")==0){//....IMPLEMENTING
 	cout<< ".... REMOVE ALBUM FUNCTION START."<<endl;
-       vector<string>albumss = library->getAlbumNames();
 
 	
       }else if(selectPath.compare("Track/Play")==0){
