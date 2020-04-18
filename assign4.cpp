@@ -71,7 +71,6 @@ void run(){
  * @file    assign4.cpp
  * @date    April, 2020
  **/
-
 class MediaClient : public MediaClientGui {
 
 public:
@@ -80,7 +79,6 @@ public:
    
   std::thread * playThread;
   MediaLibrary * library;
-
    
 /** ClickedX is one of the callbacks for GUI controls.
     * Callbacks need to be static functions. But, static functions
@@ -139,7 +137,8 @@ public:
          myRequest.setOpt(new curlpp::options::Url(url.c_str()));
          myRequest.perform();
          std::string aString = os.str();
-	 Album al(aString); //giving album constructor data from FM 
+	 Album lib;
+	 lib.initAlbum(aString); //giving album constructor data from FM 
 	 Track xd(aString);
 	 
 	 //Album xd(aString);
@@ -218,6 +217,7 @@ public:
 
    // Menu selection instance method that has ccess to instance vars.
    void Menu_Clicked() {
+     Fl_Tree_Item *item = (Fl_Tree_Item*)tree->item_clicked();
 
       char picked[80];
       menubar->item_pathname(picked, sizeof(picked)-1);
@@ -228,7 +228,8 @@ public:
       // Handle menu selections
       if(selectPath.compare("File/Save")==0){
          bool restSave = library->toJsonFile("mediacollection.json");
-         cout << "Save not implemented" << endl;
+	 if (restSave == true ) cout << "LIBRARY SAVED TO FILE" << endl;
+	 else cout << "LIBRARY NOT SAVED TO FILE " << endl;
       }else if(selectPath.compare("File/Restore")==0){
          cout << "Restore not implemented" << endl;
       }else if(selectPath.compare("File/Tree Refresh")==0){
@@ -238,28 +239,46 @@ public:
             playThread->join();
          }
          exit(0);
-      }else if(selectPath.compare("Track/Add")==0){
-     	Fl_Tree_Item *item = (Fl_Tree_Item*)tree->item_clicked();
-	cout << "this is " << item->label()<< " found in parent "
-	     << item->parent()->label();
-         cout << "...track add being implemented" << endl;
+      }else if(selectPath.compare("Track/Add")==0){// TRACK ADD DONE 
+	cout<< ".... ADD TRACK FUNCTION START."<<endl;
+
+	std::stringstream stream;
+         stream << "Music"
+                      << "/"
+                      << "My Playlist"
+		<< "/" << item->label();
+	 tree->add(stream.str().c_str());
+	 tree->redraw();
+	 cout << ".... REMOVE TRACK FUNCTION END " << endl;
       }else if(selectPath.compare("Track/Remove")==0){
          cout << "Remove not implemented" << endl;
-      }else if (selectPath.compare("Album/Add")==0){
+      }else if (selectPath.compare("Album/Add")==0){ // ------ ADD ALBUM  DONE 
+	Album q; 
 	cout << "STARTING AddAlbum FUNCTION" << endl;
      	library->initLibraryFromJsonFile("media.json");
+	vector<string>getalbumJSON = library->getAlbumNames();
 	buildTree();
+	
+	Json::Value x = q.initAlbum(getalbumJSON.at(1));
 	bool currentlibrary = library->toJsonFile("music.json");
 	if ( currentlibrary == true )
 	  cout << "ADD ALBUM COMPLETE - ALBUM IN LIBRARY! " << endl;
 	else cout<< " ALBUM NOT ADDED " << endl;
 	
 	
-      }else if (selectPath.compare("Album/Remove")==0){//....IMPLEMENTING
+      }else if (selectPath.compare("Album/Remove")==0){
+
 	cout<< ".... REMOVE ALBUM FUNCTION START."<<endl;
-       vector<string>albumss = library->getAlbumNames();
+
+	//read in current values from library
+	//get the album that was pointed to by the user
+	//delete from file
+	//build library/GUI
 
 	
+	
+	cout<< ".... REMOVE ALBUM FUNCTION END."<<endl;
+
       }else if(selectPath.compare("Track/Play")==0){
          std::string unameres = exec("uname");
          std::string pwdPath = exec("pwd");

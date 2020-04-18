@@ -1,4 +1,6 @@
 #include "Track.hpp"
+#include "Album.hpp"
+
 #include <string>
 #include <map>
 #include <vector>
@@ -33,6 +35,7 @@ using namespace std;
 class MediaLibrary {
 protected:
    std::map<std::string, Track> media;
+   std::map<std::string, Album> mediaAlbum;
 
 public:
   MediaLibrary();
@@ -45,5 +48,5 @@ public:
   std::vector<string> getTitles();
   std::vector<string> getAlbumNames();
   void getAlbum(string fmresult);
-  void removeAlbum();
+
 };
