@@ -115,8 +115,34 @@ vector<string> MediaLibrary::getAlbumNames(){
   }
   std::sort(albums.begin(),albums.end());
   albums.erase(std::unique(albums.begin(), albums.end()), albums.end());
-  for ( auto i : albums ) cout << i << endl ;
+  for ( auto i : albums ) cout <<i << endl ;
   cout << "\n...complete getAlbumNames " << endl;
   return albums;
+}
+
+void MediaLibrary::removeTrack(string songtitle){
+  vector<string>songs = getTitles();
+  vector<string>::iterator result = find(songs.begin(),songs.end(),songtitle);
+  if (result == songs.end()) cout << "Song cannot be found" << endl;
+  else songs.erase(result);
+  for (auto i : songs) cout << "updated..." << i << endl;
+  
+  ofstream _file;
+  _file.open("music.json"); //open a json file to store only needed data
+  Json::Value music;
+  string title;
+  for ( int i = 0; i < songs.size(); i++ ) {
+    title = songs[i];
+    Track md = get(songs[i]);
+    music[title]["title"]=songs[i];
+    music[title]["author"]=md.author;
+    music[title]["album"]=md.album;
+    music[title]["rank"]=md.rank;
+    music[title]["time"]=md.duration;
+   
+  }
+  Json::StyledWriter _writer;
+  _file << _writer.write(music); //write to music.json file 
+  _file.close(); //close file 
 }
 

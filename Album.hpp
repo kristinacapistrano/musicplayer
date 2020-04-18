@@ -9,11 +9,11 @@ public:
   string author;
   vector<string> tracks;
   string image;
-  string duration;
+  string runTime;
   string summary;
   Album();
-  ~Album();
   Album(string albumName,string author,vector<string> tracks,string image,
-	string duration, string summary);
-  Album(string jsonstring);
+	string runTime, string summary);
+  Album(const Json::Value& jsonObj);
+  Json::Value initAlbum(string jsonstring);
 };
